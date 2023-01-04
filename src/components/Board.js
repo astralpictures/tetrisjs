@@ -10,9 +10,7 @@ const
                 templateRows={`repeat(${board.rows}, 1fr)`}
                 templateColumns={`repeat(${board.cols}, 1fr)`}>
                 {grid.map((row, x) => (
-                    // console.log('x', x, row, grid),
                     row.map((col, y) => (
-                        // console.log('y', y, col),
                         <Cell
                             key={x + '|' + y}
                             row={x} 

@@ -13,9 +13,8 @@ const
             [grid, setBoard] = useState(matrix);
 
         useEffect(() => {
-            let tempGrid = grid;
+            let tempGrid = [...grid];
             if (piece && piece.shape) {
-                console.log(coords, piece.shape, tempGrid);
                 piece.shape.forEach((row, x) => {
                     row.forEach((value, y) => {
                         tempGrid[coords.x + x][coords.y + y] = value;
