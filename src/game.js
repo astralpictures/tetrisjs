@@ -1,3 +1,5 @@
+import {useEffect, useState} from 'react';
+
 const
     board = {
         cols: 10,
@@ -40,11 +42,25 @@ const
         Array.from(
             {length: board.rows}, () => Array(board.cols).fill(0))),
 
-    generatePiece = () => (Math.floor(Math.random() * pieces.length));
+    generatePiece = () => (Math.floor(Math.random() * pieces.length)),
+    
+    useGame = (active) => {console.log(active);
+        const
+            [piece, setPiece] = useState({shape: null, color: null});
+
+        useEffect(() => {
+            if (active) {
+                setPiece(pieces[generatePiece()]);
+            }
+        }, [active]);
+
+        return [piece];
+    };
 
 export {
     board,
     pieces,
     generateBoard,
-    generatePiece
+    generatePiece,
+    useGame
 };
