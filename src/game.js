@@ -7,6 +7,11 @@ const
         cell_width: 30
     },
 
+    gameSettings = {
+        base_duration: 2000,
+        rate: 100
+    },
+
     pieces = [
         {
             color: 'cyan',
@@ -43,18 +48,63 @@ const
             {length: board.rows}, () => Array(board.cols).fill(0))),
 
     generatePiece = () => (Math.floor(Math.random() * pieces.length)),
+
+    setDuration = (level) => (
+        level === 1 ? 
+            gameSettings.base_duration : 
+            gameSettings.base_duration - gameSettings.rate * level <= 100 ?
+                100 :
+                gameSettings.base_duration - gameSettings.rate * level),
+
+    updateBoard = (grid, piece, coords) => {
+        let tempGrid = [...grid];
+
+        if (piece.shape) {
+            piece.shape.forEach((row, x) => {
+                row.forEach((value, y) => {
+                    tempGrid[coords.x + x][coords.y + y] = value;
+                });
+            });
+
+            return tempGrid;
+        }
+
+        return grid;
+    },
     
-    useGame = (active) => {console.log(active);
+    useGame = (active) => {
         const
-            [piece, setPiece] = useState({shape: null, color: null});
+            [piece, setPiece] = useState({shape: null, color: null}),
+            [coords, setCoords] = useState({x: 0, y: 0}),
+            [grid, setBoard] = useState(generateBoard()),
+            [level, setLevel] = useState(1),
+            keydown = () => (null);
 
         useEffect(() => {
             if (active) {
+                const interval = setInterval(() => {
+                    console.log('This will be called every 2 seconds');
+                }, setDuration(level));
+
                 setPiece(pieces[generatePiece()]);
+
+                return () => clearInterval(interval);
             }
         }, [active]);
 
-        return [piece];
+        useEffect(() => (
+            setBoard(updateBoard(grid, piece, coords))), 
+            [coords.x, coords.y]);
+
+        useEffect(() => {
+            if (piece.shape && piece.shape.length === 2) {
+                setCoords({x: 0, y: 4});
+            } else if (piece.shape) {
+                setCoords({x: 0, y: 3});
+            }
+        }, [piece.shape]);
+
+        return [piece, grid, keydown, level];
     };
 
 export {
