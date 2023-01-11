@@ -16,9 +16,7 @@ const
             <Container maxW="960px" ref={gameArea}>
                 {(grid && active) &&
                     <SimpleGrid columns={2}>
-                        <Board 
-                            grid={grid}
-                            piece={piece} />
+                        <Board grid={grid} />
                     </SimpleGrid>}
                 {!active &&
                     <Box 
