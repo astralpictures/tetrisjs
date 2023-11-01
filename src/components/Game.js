@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import {useState} from 'react';
 import {Button, Box, Container, SimpleGrid} from '@chakra-ui/react';
 import {useGame} from '../game';
 import Board from "./Board";
@@ -7,16 +7,13 @@ const
     Game = () => {
         const
             [active, setActive] = useState(false),
-            [piece, grid, keydown] = useGame(active),
-            gameArea = useRef();
-
-        useEffect(() => (gameArea.current.focus()))
+            [grid, keydown, level] = useGame(active);
 
         return (
-            <Container maxW="960px" ref={gameArea}>
+            <Container maxW="960px">
                 {(grid && active) &&
                     <SimpleGrid columns={2}>
-                        <Board grid={grid} />
+                        <Board grid={grid} keydown={keydown} />
                     </SimpleGrid>}
                 {!active &&
                     <Box 
